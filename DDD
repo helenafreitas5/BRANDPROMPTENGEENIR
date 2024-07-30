@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Prompt Engineering - Flashcards</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #1d1d1d, #2f2f2f);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1, .header p, .header h2 {
+            margin: 0;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .flashcard {
+            background: #fff;
+            color: #000;
+            width: 100%;
+            height: 150px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+            font-size: 16px;
+        }
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard .front, .flashcard .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .flashcard .back {
+            transform: rotateY(180deg);
+        }
+        .flashcard.big-data {
+            background: #800080; /* Roxo */
+            color: #fff;
+        }
+        .flashcard.creative {
+            background: #FFD700; /* Amarelo */
+            color: #fff;
+        }
+        .flashcard.big-data .back, .flashcard.creative .back {
+            background: #000;
+            color: white;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="display-4">Brand Prompt Engineering</h1>
+        <p class="lead">Comandos</p>
+    </div>
+    <div class="container">
+        <div class="column" id="big-data-column">
+            <!-- Flashcards para Agente Big Data serão inseridos aqui por JavaScript -->
+        </div>
+        <div class="column" id="creative-column">
+            <!-- Flashcards para Agente Criativo serão inseridos aqui por JavaScript -->
+        </div>
+    </div>
+    <div class="footer">
+        <p>CRIADO POR HELENA FREITAS - TREINADORA DE I.AS</p>
+    </div>
+
+    <audio id="click-sound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const flashcards = [
+            { topic: "CRIE OS MEUS TOP LEADS DIVIDIDO POR EMAIL MKT INSTAGRAM TIKTOK LINKEDIN", action: "Ação: Realize análises de palavras-chave para otimizar o conteúdo digital.", audience: "big-data" },
+            { topic: "ANALISE DE SENTIMENTO", action: "Ação: Monitore e analise o sentimento dos clientes em tempo real.", audience: "big-data" },
+            { topic: "ME AJUDE A PROGRAMAR O MEU SALESFORCE", action: "Ação: Envie campanhas de email personalizadas com base em análises de dados.", audience: "big-data" },
+            { topic: "Análise de Tendências de Mercado", action: "Ação: Utilize IA para identificar e prever tendências de mercado emergentes.", audience: "big-data" },
+            { topic: "OTIMIZAÇÃO DE CONVERSÃO", action: "Ação: Analise os dados de navegação dos usuários e sugira melhorias na interface do site.", audience: "big-data" },
+            { topic: "PREVISÃO DE DESEMPENHO DE PRODUTOS", action: "Ação: Analise os dados de vendas e comportamento do cliente para prever o desempenho futuro dos produtos.", audience: "big-data" },
+            { topic: "DESENVOLVA CAMPANHAS DE EMAIL MARKETING PERSONALIZADAS", action: "Ação: Desenvolva campanhas de email marketing personalizadas a partir dos resultados de suas campanhas.", audience: "creative" },
+            { topic: "ATENDIMENTO TREINADO 24/7 INTELIGENTE", action: "Ação: Gere descrições de produtos atraentes e otimizadas para SEO.", audience: "creative" },
+            { topic: "DESCREVER PRODUTOS", action: "Ação: Gere descrições de produtos atraentes e otimizadas para SEO.", audience: "creative" },
+            { topic: "ANÁLISE DE CAMPANHAS PUBLICITÁRIAS", action: "Ação: Avalie o desempenho de campanhas publicitárias em diversas plataformas.", audience: "creative" },
+            { topic: "RECOMENDAR E-COMMERCE", action: "Ação: Avalie o desempenho de campanhas publicitárias em diversas plataformas.", audience: "creative" },
+            { topic: "CRIAR PERSONAS COM SEUS DADOS", action: "Ação: Desenvolva personas detalhadas a partir de dados reais para campanhas mais eficazes.", audience: "creative" },
+        ];
+
+        const bigDataColumn = document.getElementById('big-data-column');
+        const creativeColumn = document.getElementById('creative-column');
+        const clickSound = document.getElementById('click-sound');
+
+        flashcards.forEach(({ topic, action, audience }) => {
+            const flashcard = document.createElement('div');
+            flashcard.classList.add('flashcard', audience);
+
+            const front = document.createElement('div');
+            front.classList.add('front');
+            front.innerHTML = `<div><i class="fas fa-play-circle"></i> ${topic}</div>`;
+
+            const back = document.createElement('div');
+            back.classList.add('back');
+            back.innerHTML = `<div><i class="fas fa-info-circle"></i> ${action}</div>`;
+
+            flashcard.appendChild(front);
+            flashcard.appendChild(back);
+
+            flashcard.addEventListener('click', () => {
+                flashcard.classList.toggle('is-flipped');
+                clickSound.currentTime = 0;
+                clickSound.play();
+            });
+
+            if (audience === 'big-data') {
+                bigDataColumn.appendChild(flashcard);
+            } else if (audience === 'creative') {
+                creativeColumn.appendChild(flashcard);
+            }
+        });
+    </script>
+</body>
+</html>
